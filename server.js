@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const { Sequelize, DataTypes } = require('sequelize');
 const createRoutes = require('./create');
@@ -8,12 +9,18 @@ const deleteRoutes = require('./delete');
 
 const app = express();
 app.use(bodyParser.json());
+// Enable CORS
+app.use(cors( {
+    origin: 'http://127.0.0.1:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 
-// Connect to MySQL
-const sequelize = new Sequelize('inventory', 'username', 'password', {
-    host: 'sqlite',
+// Connect to SQLite
+const sequelize = new Sequelize({
     dialect: 'sqlite',
+    storage: './database.sqlite'
 });
 
 const Equipment = sequelize.define('Equipment', {
@@ -55,16 +62,10 @@ const Equipment = sequelize.define('Equipment', {
     },
 });
 
-sequelize.sync().then(() => {
+sequelize.sync({ force: true }).then(() => { // Force sync for troubleshooting
     console.log('Database & tables created!');
-});
-
-// Enable CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-Width, Content-Type, Accept');
-    next();
+}).catch(err => {
+    console.error('Error syncing database:', err);
 });
 
 // Use Routes

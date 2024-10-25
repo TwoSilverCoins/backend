@@ -1,5 +1,5 @@
 const express = require('express');
-const Equipment = require('./equipments');
+const { Equipment } = require('./equipments');
 
 const router = express.Router();
 
@@ -18,4 +18,4 @@ router.delete('/equipments/:id', async (req, res) => {
     }
 });
 
-module.express = router;
+module.exports = router;

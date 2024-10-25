@@ -4,9 +4,11 @@ const { Sequelize, DataTypes } = require('sequelize');
 // Connect to SQLite
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite'
+  storage: './database.sqlite',
+  logging: console.log // Enable logging for debugging
+  
 });
-
+// Define the Equipment model
 const Equipment = sequelize.define('Equipment', {
   name: {
     type: DataTypes.STRING,
@@ -29,7 +31,7 @@ const Equipment = sequelize.define('Equipment', {
     allowNull: false,
   },
   purchaseDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   location: {
@@ -44,6 +46,8 @@ const Equipment = sequelize.define('Equipment', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  timestamps: true, // Add timestamps for createdAt and updatedAt
 });
 
-module.exports = Equipment;
+module.exports = { Equipment, sequelize };
