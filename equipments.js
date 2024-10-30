@@ -1,15 +1,16 @@
-// equipment.js
+// Import Sequelize and DataTypes from the sequelize package
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Connect to SQLite
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite',
+  storage: './database.sqlite', // Specify the file path for the SQLite Database
   logging: console.log // Enable logging for debugging
   
 });
 // Define the Equipment model
 const Equipment = sequelize.define('Equipment', {
+  // Name field: a non-nullable string
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -47,7 +48,8 @@ const Equipment = sequelize.define('Equipment', {
     allowNull: false,
   },
 }, {
-  timestamps: true, // Add timestamps for createdAt and updatedAt
+  // Add timestamps for createdAt and updatedAt
+  timestamps: true,
 });
-
+// Export the Equipment model and sequelize instance
 module.exports = { Equipment, sequelize };
